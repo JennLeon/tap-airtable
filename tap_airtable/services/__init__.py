@@ -127,7 +127,6 @@ class Airtable(object):
                 meta = metadata.write(meta, ('properties', field_name), 'airtable_field_ids', [field["id"]])
 
             schema = Schema(type='object', properties=schema_cols)
-            print(f"== SELECT === {cls.select}")
             entry = CatalogEntry(
                 tap_stream_id=table["id"],
                 database=base_name or base_id,
