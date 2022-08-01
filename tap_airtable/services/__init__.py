@@ -101,6 +101,9 @@ class Airtable(object):
                 if field["name"][0].isdigit():
                     field_name = "c_" + field_name
 
+                if "id" == field["name"][0].lower():
+                    field_name = "view_id"
+
                 col_schema = cls.column_schema(field)
                 if col_schema.inclusion == "automatic":
                     keys.append(field_name)
@@ -116,7 +119,8 @@ class Airtable(object):
 
                 meta = metadata.write(meta, ('properties', field_name), 'inclusion', 'available')
                 meta = metadata.write(meta, ('properties', field_name), 'real_name', field['name'])
-                meta = metadata.write(meta, ('properties', field_name), 'airtable_type', field["config"]["type"] or None)
+                meta = metadata.write(meta, ('properties', field_name), 'airtable_type',
+                                      field["config"]["type"] or None)
                 meta = metadata.write(meta, ('properties', field_name), 'airtable_field_ids', [field["id"]])
 
             schema = Schema(type='object', properties=schema_cols)
