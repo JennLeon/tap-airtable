@@ -139,10 +139,10 @@ class Airtable(object):
             )
 
             if '*.*' not in cls.select:
-                simple_table = []
                 for c_table in cls.select:
-                    simple_table.append(c_table.split(".")[0])
-                    entries.append(entry)
+                    simple_table = c_table.split(".")[0]
+                    if entry.tap_stream_id == simple_table:
+                        entries.append(entry)
             else:
                 entries.append(entry)
 
