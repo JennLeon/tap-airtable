@@ -30,6 +30,7 @@ class Airtable(object):
     remove_emojis = False
     logger = singer.get_logger()
     session = init_session()
+    select = ['*.*']
 
     @classmethod
     def run_discovery(cls, args):
@@ -58,6 +59,8 @@ class Airtable(object):
             cls.selected_by_default = config["selected_by_default"]
         if "remove_emojis" in config:
             cls.remove_emojis = config["remove_emojis"]
+        if "select" in config:
+            cls.select = config["select"]
         cls.token = config["token"]
 
     @classmethod
@@ -133,7 +136,14 @@ class Airtable(object):
                 key_properties=keys,
                 schema=schema
             )
-            entries.append(entry)
+
+            if '*.*' not in cls.select:
+                simple_table = []
+                for c_table in cls.select:
+                    simple_table.append(c_table.split(".")[0])
+                    entries.append(entry)
+            else:
+                entries.append(entry)
 
         return entries
 
