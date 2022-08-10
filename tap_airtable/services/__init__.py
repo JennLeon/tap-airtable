@@ -104,7 +104,7 @@ class Airtable(object):
                 if field["name"][0].isdigit():
                     field_name = "c_" + field_name
 
-                if "id" == field["name"][0].lower():
+                if "id" == field["name"].lower():
                     field_name = "view_id"
 
                 col_schema = cls.column_schema(field)
