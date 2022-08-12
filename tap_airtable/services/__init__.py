@@ -86,6 +86,7 @@ class Airtable(object):
         response = cls.session.get(url=cls.metadata_url + base_id, headers=headers)
         response.raise_for_status()
         entries = []
+        special_char_map = {ord('ä'): 'ae', ord('ü'): 'ue', ord('ö'): 'oe', ord('ß'): 'ss'}
 
         for table in response.json()["tables"]:
             schema_cols = {"id": Schema(inclusion="automatic", type=['null', "string"])}
@@ -106,6 +107,8 @@ class Airtable(object):
 
                 if "id" == field["name"].lower():
                     field_name = "view_id"
+
+                field_name = field_name.translate(special_char_map)
 
                 col_schema = cls.column_schema(field)
                 if col_schema.inclusion == "automatic":
