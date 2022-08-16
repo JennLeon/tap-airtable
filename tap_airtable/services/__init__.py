@@ -275,6 +275,8 @@ class Airtable(object):
         if requested_type == "string" and col_type is not str:
             if col_type is float or col_type is int:
                 return str(val)
+            elif col_type is list and len(val) == 1:
+                return str(val[0])
             return json.dumps(val)
         return val
 
